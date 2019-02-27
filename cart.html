@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>购物车</title>
+    <link rel="stylesheet" href="css/common.min.css">
+    <link rel="stylesheet" href="css/a.css">
+    <link rel="stylesheet" href="css/d.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/mui.min.css">
+</head>
+
+<body>
+    <div class="W-cart-head" id="W-cart-head">
+        <div class="W_register h">
+            <a href="//m.wbiao.cn/topics/app-download/"
+                style="background-image:url(//static.wbiao.co/p/m/images/1/download_tips_2.png);background-size: 100% auto;background-position: center center;"
+                class="register">
+            </a>
+            <span class="sp1" id="closer"></span>
+        </div>
+        <header class="W_title">
+            <ul class="clearfix">
+                <li class="wb_title_middle wb_title">购物车</li>
+                <li class="rewrite_right">
+                    <a href="javascript:void(0);" class="" id="w-editAll">编辑全部</a>
+                    <a href="javascript:void(0);" class="h" id="w-editFinish">完成</a>
+                </li>
+            </ul>
+        </header>
+        <div class="login-tips">登录后购物车的商品将保存到您账号中，<a
+                href="https://mu.wbiao.cn/member/login/?referrer=https://m.wbiao.cn/cart">现在登录</a></div>
+    </div>
+    <main>
+        <div class="W-cart paddingTop80" id="W-cart">
+            <div class="empty-status h">
+                <div class="icon icon-a-empty-cart"></div>
+                <p>购物车是空的</p>
+                <div class="btns-wrap">
+                    <div class="btns left"> <a href="https://m.wbiao.cn">逛逛首页</a></div>
+                    <div class="btns right"> <a href="https://mu.wbiao.cn/member/collection">查看收藏</a></div>
+                </div>
+            </div>
+            <div class="cart-content"></div>
+        </div>
+    </main>
+    <div class="W-cart-footer" id="W-cart-footer">
+        <div class="footer-bar footer-bar-normal">
+            <div class="left clearfix"><span class="cart-tik fl"><span class="normal"></span><span
+                        class="icon-a-red-tik"></span> <i>全选</i></span>
+                <div class="detail fr">
+                    <p>总计:¥<span id="payableAmount">0</span></p>
+                    <p>总额:¥<span id="goodsAmount">0</span><span class="h">&nbsp;活动优惠:¥<span
+                                id="totalDiscount">0</span></span></p>
+                </div>
+            </div> <button class="submit-btn fr">结算</button>
+        </div>
+        <div class="footer-bar footer-bar-editing h">
+            <div class="left clearfix"><span class="cart-tik fl"><span class="normal"></span><span
+                        class="icon-a-red-tik"></span> <i>全选</i></span></div>
+            <div class="edit-btns fr"> <button class="add-to-collect-btn btns" id="batch-collect-btn">移入收藏</button>
+                <button class="delete-btn btns" id="batch-delete-btn">删除</button></div>
+        </div>
+        <section class="W_footer" id="W_footer"><a id="index_home" href="/">
+                <div class="W_footer_img icon-a-home01"></div>
+                <div class="W_footer_title">首页</div>
+            </a><a id="index_find" href="http://m.wbiao.com.cn">
+                <div class="W_footer_img icon-a-discover01"></div>
+                <div class="W_footer_title">资讯</div>
+            </a><a id="index_classify" href="/fenlei.html">
+                <div class="W_footer_img icon-a-sort01"></div>
+                <div class="W_footer_title">选表</div>
+            </a><a id="index_cart" href="/cart" class="on">
+                <div class="W_footer_img icon-a-cart01"></div>
+                <div class="W_footer_title">购物车</div>
+                <div class="W_footer_tag W_footer_cart_badge">13</div>
+            </a><a id="index_member" href="https://mu.wbiao.cn/member">
+                <div class="W_footer_img icon-a-my01"></div>
+                <div class="W_footer_title">我的</div>
+            </a></section>
+    </div>
+    <script type="text/template" id="tpl">
+        <% var arr = [] %>
+       <% for (var i = 0; i < list.length; i++) { %>
+           <% if(arr.indexOf(list[i].dianpu)==-1){ %>
+               <% arr.push(list[i].dianpu) %>
+           <% } %>
+       <% } %>
+        <% arr.forEach(function(val,index){ %>
+            <div class="shop-blocks" data-shop-code="<%=val%>">
+                <div class="shop-title">
+                    <p class="shop"><%=val%></p><span class="cart-tik"><span class="normal"></span><span class="icon-a-red-tik"></span></span>
+                </div>
+                <%  list.forEach(function(val2,index2){ %>
+                    <%  if(val2.dianpu==val){ %>  
+                <div class="goods">
+                    <div class="lines" data-goods-code="<%=val2.Id%>" data-cart-id="0">
+                        <div class="slide-wrap" style="touch-action: pan-y pinch-zoom;">
+                            <div class="slide-scroller clearfix" style="transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-duration: 200ms; transform: translate(0px, 0px) translateZ(0px);">
+                                <div class="inner fl clearfix"><a href="/goods/52812" target="_self">
+                                        <div class="img fl"> <img src="//image7.wbiao.co/shop/201601_20_H40405691_41734.jpg?x-oss-process=image/resize,w_98,h_98"></div>
+                                        <div class="desc">
+                                            <p class="words"><%=val2.name%></p>
+                                            <p class="specifications">真皮 珍珠母贝</p>
+                                            <p class="bottom clearfix"> <span class="price"><i>¥</i><i class="wbiaoPrice"><%=val2.price%></i>
+                                                    <i>¥<%=val2.oldprice%></i></span> <span class="quatity fr">x<span>1</span></span></p>
+                                        </div>
+                                    </a>
+                                    <div class="editor">
+                                        <div class="calc clearfix"> <span class="minus calc-btns fl">-</span>
+                                            <div class="val">1</div> <span class="plus calc-btns">+</span>
+                                        </div> <button class="del">删除</button>
+                                    </div>
+                                </div>
+                                <div class="btns fl clearfix">
+                                    <div class="bs to-collection fl"><span>移入收藏</span></div>
+                                    <div class="bs to-delete fl"><span>删除</span></div>
+                                </div><span class="cart-tik"><span class="normal"></span><span class="icon-a-red-tik"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <%  } %>
+           <% }) %>
+            </div>
+          
+        </div>
+      <% }) %>
+   </script>
+    <!-- <script src="js/zepto.min.js"></script>
+   <script src="js/touch.js"></script> -->
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/iscroll-probe.js"></script>
+    <script src="js/ejs.js"></script>
+    <script src="js/yb.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+
+</html>
