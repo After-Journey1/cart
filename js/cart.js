@@ -1,6 +1,6 @@
 (function (global, $) {
     // 模拟用户登录的效果
-    document.cookie = "user=dm";
+    // document.cookie = "user=dm";
     var t = ["normal", "editing"], e = t[0];
     var n = 200, s;
     var cart = {};
@@ -85,6 +85,7 @@
     cart.goodsGet = function (cb) {
         // 发ajax将local中的购物车信息添加到数据库中，成功之后展现购物车信息
         function localAddTokuShowInfo() {
+            // cb(data);
             $.ajax({
                 type: "get",
                 url: "api/dmCart.php",
@@ -334,6 +335,7 @@
         }
         // 得到购物车的数据，将数据用模板渲染上去，然后创建每一个商品的iscroll
         cart.goodsGet(function (data) {
+
             var shopList=[];
             var goodsList={};
             if (!data.error) {

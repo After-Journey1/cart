@@ -12,7 +12,7 @@
 
     if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
-            $list[]=$row;
+            $list[$row["name"]] = $row;
         }
         $data=array("error"=>0,"list"=>$list);
     }else{
