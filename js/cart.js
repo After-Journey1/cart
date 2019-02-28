@@ -1,9 +1,7 @@
 (function (global, $) {
     // 模拟用户登录的效果
     document.cookie = "user=dm";
-    var t = ["normal", "editing"]
-        , e = t[0];
-
+    var t = ["normal", "editing"], e = t[0];
     var n = 200, s;
     var cart = {};
     cart.getSelected = function () {
@@ -53,13 +51,9 @@
             cart.footer.submitBtn.val(goodsAmount);
             cart.footer.deleteBtn.red()
         }
-
-
-
     }
     // 从localstorage中查询购物车信息
     cart.getInfoFromStorage = function (t) {
-        console.log(t);
         if (!t) {
             return $.parseJSON(localStorage.getItem("cart"));
         }
@@ -108,7 +102,7 @@
             })
         }
         function mergeToKuShowInfo() {
-            o.ajax({
+            $.ajax({
                 type: "post",
                 url: "api/dmMergeToLoginCart.php",
                 dataType: "json",
@@ -192,7 +186,6 @@
         submitBtn: {
             val: function (t) {
                 if ("number" == typeof t) {
-                    console.log("ssZ")
                     if (t) {
                         $("#W-cart-footer .submit-btn").text("结算(" + t + ")");
                     } else {
@@ -258,8 +251,7 @@
         setTimeout(function () {
             cart.scrolls[t].enabled = !1
         }, n + 10)
-    }
-        ;
+    };
     cart.editAllCancel = function () {
         $(".shop-blocks").removeClass("editing");
         for (var t in cart.scrolls)
@@ -271,8 +263,7 @@
     };
     cart.isSelectedAll = function () {
         return $(".shop-blocks .cart-tik.on").length === $(".shop-blocks .cart-tik").length
-    }
-        ;
+    };
     cart.select = {
         all: function () {
             var t = this
@@ -343,15 +334,20 @@
         }
         // 得到购物车的数据，将数据用模板渲染上去，然后创建每一个商品的iscroll
         cart.goodsGet(function (data) {
-            // 如果从数据库中的数据有错误就不执行之后的操作
-            // if (data.info.error > 0)
-            //     return !1;
-            // 如果数据没有错误就用模板将数据渲染上去
-
-            var html = ejs.render($("#tpl").html(), { list: data });
-            $("#W-cart").children(".cart-content").html(html);
-
-
+            var shopList=[];
+            var goodsList={};
+            if (!data.error) {
+                $.each(data.list,function(index,value){
+                    if(shopList.indexOf(value.dianpu)!=-1){
+                        shopList.push(value.dianpu);
+                    }
+                    goodsList[value.dianpu]=$.extend(true,[],value);
+                });
+                var html = ejs.render($("#tpl").html(), { list: data.list });
+                $("#W-cart").children(".cart-content").html(html);
+            } else {
+                cart.emptyTips.show();
+            }
 
             // if (data.data.data.cartShopList.length > 0) {
             //     // 如果商店的长度大于0
