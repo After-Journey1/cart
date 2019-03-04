@@ -83,30 +83,31 @@
             </a></section>
     </div>
     <script type="text/template" id="tpl">
-        <% var arr = [] %>
+        <!-- <% var arr = [] %>
        <% for (var i = 0; i < list.length; i++) { %>
            <% if(arr.indexOf(list[i].dianpu)==-1){ %>
                <% arr.push(list[i].dianpu) %>
            <% } %>
-       <% } %>
-        <% arr.forEach(function(val,index){ %>
-            <div class="shop-blocks" data-shop-code="<%=val%>">
+       <% } %> -->
+       <% for(var pid in list){ %>
+            <div class="shop-blocks" data-shop-code="<%=pid%>">
                 <div class="shop-title">
-                    <p class="shop"><%=val%></p><span class="cart-tik"><span class="normal"></span><span class="icon-a-red-tik"></span></span>
+                        <%  for(var id in list[pid]){ %>
+                    <p class="shop"><%=list[pid][id].dianpu%></p><span class="cart-tik"><span class="normal"></span><span class="icon-a-red-tik"></span></span>
+                        <% break;} %>
                 </div>
-                <%  list.forEach(function(val2,index2){ %>
-                    <%  if(val2.dianpu==val){ %>  
+                <%  for(var id in list[pid]){ %>
                 <div class="goods">
-                    <div class="lines" data-goods-code="<%=val2.Id%>" data-cart-id="0">
+                    <div class="lines" data-goods-code="<%=list[pid][id].Id%>" data-cart-id="0">
                         <div class="slide-wrap" style="touch-action: pan-y pinch-zoom;">
                             <div class="slide-scroller clearfix" style="transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-duration: 200ms; transform: translate(0px, 0px) translateZ(0px);">
                                 <div class="inner fl clearfix"><a href="/goods/52812" target="_self">
                                         <div class="img fl"> <img src="//image7.wbiao.co/shop/201601_20_H40405691_41734.jpg?x-oss-process=image/resize,w_98,h_98"></div>
                                         <div class="desc">
-                                            <p class="words"><%=val2.name%></p>
+                                            <p class="words"><%=list[pid][id].name%></p>
                                             <p class="specifications">真皮 珍珠母贝</p>
-                                            <p class="bottom clearfix"> <span class="price"><i>¥</i><i class="wbiaoPrice"><%=val2.price%></i>
-                                                    <i>¥<%=val2.oldprice%></i></span> <span class="quatity fr">x<span>1</span></span></p>
+                                            <p class="bottom clearfix"> <span class="price"><i>¥</i><i class="wbiaoPrice"><%=list[pid][id].price%></i>
+                                                    <i>¥<%=list[pid][id].oldprice%></i></span> <span class="quatity fr">x<span>1</span></span></p>
                                         </div>
                                     </a>
                                     <div class="editor">
@@ -124,11 +125,9 @@
                     </div>
                 </div>
                     <%  } %>
-           <% }) %>
             </div>
-          
         </div>
-      <% }) %>
+      <% } %>
    </script>
     <!-- <script src="js/zepto.min.js"></script>
    <script src="js/touch.js"></script> -->
@@ -139,5 +138,5 @@
     <script src="js/ejs.js"></script>
     <script src="js/yb.js"></script>
     <script src="js/cart.js"></script>
-    <!-- <script src="js/moni.js"></script> -->
+    <script src="js/moni.js"></script>
 </html>

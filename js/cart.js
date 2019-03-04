@@ -65,14 +65,14 @@
                 }
                 return totalNum;
             } else if ("array" === t) {
-                $.each(localCart, function (index, value) {
-                    allProMsg.push({
-                        goodsCode: index,
-                        quantity: value.quantity,
-                        salePrice: value.salePrice
-                    })
-                });
-                return allProMsg;
+                // $.each(localCart, function (index, value) {
+                //     allProMsg.push({
+                //         goodsCode: index,
+                //         quantity: value.quantity,
+                //         salePrice: value.salePrice
+                //     })
+                // });
+                return localCart;
             } else if ("number" == typeof t) {
                 return localCart[String(t)];
             } else {
@@ -83,12 +83,15 @@
     }
     // 判断有没有登录然后选择从数据库或者是localstorage中查询购物车信息
     cart.goodsGet = function (cb) {
+        console.log("dylcg")
+        // 暂时不添加到数据库
         // 发ajax将local中的购物车信息添加到数据库中，成功之后展现购物车信息
-        function localAddTokuShowInfo() {
-            // cb(data);
+        function localShowInfo() {
+            console.log(allProMsg)
+            cb(allProMsg);
             $.ajax({
                 type: "get",
-                url: "api/dmCart.php",
+                url: "api/dmMergeToLoginCart.php",
                 dataType: "json",
                 beforeSend: function () {
                     console.log("loading");
@@ -115,7 +118,7 @@
                 },
                 success: function (data) {
                     localStorage.removeItem("cart"),
-                        localAddTokuShowInfo()
+                        localShowInfo()
                 },
                 error: function (data) { }
             })
@@ -126,16 +129,17 @@
         if (0 === yb.isLogin && allProMsg.length <= 0) {
             return false;
         }
+        // 待完善
         // 如果用户没有登录，但是local的cart中有商品，就发请求加到数据库的一个假的账户中，然后展示信息
         if (0 === yb.isLogin) {
-            localAddTokuShowInfo()
+            localShowInfo()
         } else if (1 === yb.isLogin) {
             // 如果用户登录了，同时local的cart中有商品，就发请求将local的cart的商品加到此用户的购物车信息中，然后展示信息
             if (allProMsg.length && allProMsg.length > 0) {
                 mergeToKuShowInfo()
             } else {
                 // 如果用户登录了，但是local的cart中没有商品，就发请求，从数据库调此用户的购物车信息，然后展示信息
-                localAddTokuShowInfo()
+                localShowInfo()
             }
         }
     }
@@ -330,21 +334,23 @@
         }
         // 如果用户没有登录就让登录提示显示出来，同时，如果购物车中有东西就显示东西，如果购物车内没有东西就显示购物车位空
         if (0 === yb.isLogin) {
+            console.log("mydllllll")
             cart.header.loginTips.show();
             cart.getInfoFromStorage() || cart.emptyTips.show();
         }
         // 得到购物车的数据，将数据用模板渲染上去，然后创建每一个商品的iscroll
         cart.goodsGet(function (data) {
-
-            var shopList=[];
-            var goodsList={};
+            console.log("gqsj");
+            var shopList = [];
+            var goodsList = {};
             if (!data.error) {
-                $.each(data.list,function(index,value){
-                    if(shopList.indexOf(value.dianpu)!=-1){
-                        shopList.push(value.dianpu);
-                    }
-                    goodsList[value.dianpu]=$.extend(true,[],value);
-                });
+                console.log("mycw");
+                // $.each(data.list,function(index,value){
+                //     if(shopList.indexOf(value.dianpu)!=-1){
+                //         shopList.push(value.dianpu);
+                //     }
+                //     goodsList[value.dianpu]=$.extend(true,[],value);
+                // });
                 var html = ejs.render($("#tpl").html(), { list: data.list });
                 $("#W-cart").children(".cart-content").html(html);
             } else {

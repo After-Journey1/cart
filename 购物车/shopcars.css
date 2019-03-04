@@ -1,0 +1,225 @@
+@font-face {
+    font-family: 'iconfont';
+    src: url('../fonts/iconfont.eot');
+    src: url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/iconfont.woff2') format('woff2'),
+        url('../fonts/iconfont.woff') format('woff'),
+        url('../fonts/iconfont.ttf') format('truetype'),
+        url('../fonts/iconfont.svg#iconfont') format('svg');
+}
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size:.32rem;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+html{
+    font-size: 100px;
+}
+img{
+    vertical-align: top;
+}
+body{
+    background: #f5f5f5;
+    height: 100%;
+    width: 100%;
+    color:#fff;
+}
+input{
+    width:.45rem;
+    height:.45rem;
+    border-radius: 50%;
+    border:.02rem solid #ccc;
+    vertical-align: middle;
+    outline: none;
+}
+:checked{
+    background: #f21c1c;
+    border-color: #f21c1c;
+}
+input::after{
+    content: "";
+    display: block;
+    width:.2rem;
+    height:.1rem;
+    border-left:.04rem solid #fff;
+    border-bottom:.04rem solid #fff;
+    transform: rotate(-45deg);
+    margin:.1rem auto;
+}
+/* 头部 */
+.header-wrapper{
+    width: 100%;
+    background: url('../images/car/car13.png') no-repeat;
+    background-size: cover;
+    height: 0.88rem;
+    display: flex;
+}
+.header{
+    line-height: 0.88rem;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    align-items: center;
+    width:91%;
+    margin:0 .3rem;
+}
+.bg{
+    background: url('../images/car/car13.png') no-repeat;
+    background-size: cover;
+    height:2rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.shop-title{
+    position: relative;
+    padding:.1rem .2rem;
+}
+.shop-title h1{
+    font-size:.36rem;
+    margin-bottom: -.14rem;
+}
+.login-tips{
+    color:#78b;
+    font-size: .24rem;
+    background: #e9ecf4;
+    height:.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-tips .login-btn{
+    border:.02rem solid #78b;
+    color:#78b;
+    padding:.1rem;
+    border-radius: .1rem;
+}
+/* 列表 */
+.list{
+    color:#333;
+}
+.list-item{
+    padding: .2rem 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 .04rem .2rem 0 rgba(0,0,0,0.5);
+    margin:0 .28rem .3rem;
+    border-radius: .08rem;
+}
+.list-item img{
+    width: 1.4rem;
+    height: 1.4rem;
+    border:.02rem solid #dfdfdf;
+    border-radius: .1rem;
+}
+.list-item .product{
+    width: 4.3rem;
+    display: flex;
+    flex-direction: column;
+    height: 1.4rem;
+    justify-content: space-between;
+}
+.list-item .title{
+    line-height: 1.2;
+}
+.list-item .price-num{
+    display: flex;
+    justify-content: space-between;
+}
+.list-item .price-num p{
+    color:#f21c1c;
+}
+.list-item .num-control{
+    border:.02rem solid #ccc;
+}
+.list-item .num-control .num{
+    border-left:.02rem solid #ccc;
+    border-right:.02rem solid #ccc;
+}
+.list-item .num-control .minus-btn{
+    padding:0 .05rem 0 .15rem;
+}
+.list-item .num-control .num{
+    padding:0 .2rem;
+}
+.list-item .num-control .add-btn{
+    padding:0 .05rem;
+}
+/* 推荐 */
+.recommend{
+    color:#333;
+    display: flex;
+    justify-content: space-between;
+}
+.recommend-item{
+    width: 3rem;
+    padding: .2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 .04rem .2rem 0 rgba(0,0,0,0.5);
+    margin:0 .28rem .3rem;
+    border-radius: .08rem;
+}
+.recommend-item img{
+    width: 1.4rem;
+    height: 1.4rem;
+    border:.02rem solid #dfdfdf;
+    border-radius: .1rem;
+}
+.recommend-item .product{
+    width: 2.5rem;
+    line-height: 1.2;
+    text-align: center;
+}
+.recommend-item .price-num{
+    margin-top: .1rem;
+    display: flex;
+    justify-content:space-between;
+}
+.recommend-item .price-num p{
+    color:#f21c1c;
+}
+
+footer{
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border-top:.02rem solid #ccc;
+    height: 1rem;
+    color:#333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+}
+footer .ckeckall-btn{
+    margin-left:.2rem;
+}
+footer .total-num{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height:.7rem;
+}
+footer .total-num p{
+    color:#9c9c9c;
+}
+footer .total-num p:first-child{
+    margin-bottom: -.1rem;
+    color: #f21c1c;
+}
+footer .submit-btn{
+    color:#fff;
+    background: #f21c1c;
+    padding:.3rem .6rem;
+}

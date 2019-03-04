@@ -12,7 +12,7 @@
 
     if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
-            $list[$row["name"]] = $row;
+            $list[$row["dianpuid"]][$row["Id"]] = $row;
         }
         $data=array("error"=>0,"list"=>$list);
     }else{

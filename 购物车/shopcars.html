@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/shopcars.css">
+    <link rel="stylesheet" href="css/detail/iconfont.css">
+</head>
+<body>
+    <header>
+        <div class="header-wrapper">
+            <div class="header">
+                <i class="iconfont">&#xe600;</i>
+                <span class="tit">购物车</span>
+                <span class="operation">编辑</span>
+            </div>
+        </div>
+        <div class="bg"></div>
+        <div class="shop-title">
+            <h1>购物车</h1>
+            <p>
+                共<span class="all-num">0</span>件商品
+            </p>
+        </div>
+        <div class="login-tips">
+            <p>
+                <i>i</i>
+                <span> 登录后可同步电脑与手机购物车中的商品</span>
+                <a href="login.html" class="login-btn">登录</a>
+            </p>
+        </div>
+    </header>
+    <!-- 列表 -->
+    <div class="list"></div>
+    <!-- 推荐 -->
+    <h1>推荐商品</h1>
+    <div class="recommend">
+        <div class="recommend-item">
+            <img src="images/shop/20180913062755703.jpg" alt="">
+            <div class="product">
+                <p class="title">小米手环3</p>
+                <div class="price-num">
+                    <p>
+                        ￥<span class="rec-price">169</span>.00
+                    </p>
+                    <i class="iconfont rec-shop">&#xe60b;</i>
+                </div>
+            </div>
+        </div>
+        <div class="recommend-item">
+            <img src="images/shop/20180913062755703.jpg" alt="">
+            <div class="product">
+                <p class="title">乐物 小米9  全屏2.5D钢化膜</p>
+                <div class="price-num">
+                    <p>
+                        ￥<span class="price">89</span>.00
+                    </p>
+                    <i class="iconfont rec-shop">&#xe60b;</i>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <footer>
+        <div class="ckeckall-btn">
+            <input type="checkbox" name="" class="check-all">
+            <span>全选</span>
+        </div>
+        <div class="total-num">
+            <p>
+                合计:￥
+                <span class="all-price" data-price="0.00">0.00</span>
+            </p>
+            <p>
+                <span class="all-num">0</span>件商品
+            </p>
+        </div>
+        <a href="javascript:;" class="submit-btn">去结算</a>
+    </footer>
+</body>
+<script src="js/base.js"></script>
+<script src="js/zepto.min.js"></script>
+<script src="js/ejs.js"></script>
+<script src="js/touch.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/shopcars.js"></script>
+<script type="text/template" id="shop-data">
+<% msg.forEach(function(val,i){ %>
+<div class="list-item">
+    <input type="checkbox" name="" class="checkbox  <%=i%>">
+    <img src="<%=val.img%>" alt="">
+    <div class="product">
+        <p class="title"><%=val.name%></p>
+        <div class="price-num">
+            <p>
+                ￥<span class="price"><%=val.price%></span>.00
+            </p>
+            <div class="num-control">
+                <span class="minus-btn">-</span>
+                <span class="num"><%=val.count%></span>
+                <span class="add-btn">+</span>
+            </div>
+        </div>
+    </div>
+</div> 
+<% }) %>
+</script>
+</html>
