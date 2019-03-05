@@ -6,24 +6,15 @@
     if($mysqli->connect_errno){
         die($mysqli->connect_error);
     }
+$cartIdList=$_GET["cartIdList"];
+        $sql="delete from cartdm where Id in ($cartIdList)";
 
-    $idList=$_GET["unloginCartList"];
-    if($idList){
-        $sql="select * from list where Id in ($idList)";
-    }else{
-        $sql="select * from list,cartdm  where list.Id=cartdm.Id";
-    }
     $result=$mysqli->query($sql);
-
-    if($result->num_rows>0){
-        while($row=$result->fetch_assoc()){
-            $list[$row["brand"]][$row["Id"]] = $row;
-        }
-        $data=array("error"=>0,"list"=>$list);
-    }else{
-        $data=array("error"=>1);
-    }
-
+if($result===TRUE){
+    $data["error"]=0;
+}else{
+    $data["error"]=1;
+}
     echo json_encode($data);
 
     // header("content-type:text/html;charset=utf-8");

@@ -89,25 +89,30 @@
                <% arr.push(list[i].dianpu) %>
            <% } %>
        <% } %> -->
-       <% for(var pid in list){ %>
-            <div class="shop-blocks" data-shop-code="<%=pid%>">
+       <% for(var brand in list){ %>
+            <div class="shop-blocks" data-shop-code="<%=brand%>">
                 <div class="shop-title">
-                        <%  for(var id in list[pid]){ %>
-                    <p class="shop"><%=list[pid][id].dianpu%></p><span class="cart-tik"><span class="normal"></span><span class="icon-a-red-tik"></span></span>
-                        <% break;} %>
+                    <p class="shop"><%=brand%></p><span class="cart-tik"><span class="normal"></span><span class="icon-a-red-tik"></span></span>
                 </div>
-                <%  for(var id in list[pid]){ %>
+                <%  for(var id in list[brand]){ %>
                 <div class="goods">
-                    <div class="lines" data-goods-code="<%=list[pid][id].Id%>" data-cart-id="0">
+                    <div class="lines" data-goods-code="<%=list[brand][id].Id%>" data-cart-id="0">
                         <div class="slide-wrap" style="touch-action: pan-y pinch-zoom;">
                             <div class="slide-scroller clearfix" style="transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); transition-duration: 200ms; transform: translate(0px, 0px) translateZ(0px);">
                                 <div class="inner fl clearfix"><a href="/goods/52812" target="_self">
-                                        <div class="img fl"> <img src="//image7.wbiao.co/shop/201601_20_H40405691_41734.jpg?x-oss-process=image/resize,w_98,h_98"></div>
+                                        <div class="img fl"> <img src="<%=list[brand][id].img%>"></div>
                                         <div class="desc">
-                                            <p class="words"><%=list[pid][id].name%></p>
-                                            <p class="specifications">真皮 珍珠母贝</p>
-                                            <p class="bottom clearfix"> <span class="price"><i>¥</i><i class="wbiaoPrice"><%=list[pid][id].price%></i>
-                                                    <i>¥<%=list[pid][id].oldprice%></i></span> <span class="quatity fr">x<span>1</span></span></p>
+                                            <p class="words"><%=list[brand][id].details%></p>
+                                            <p class="specifications"><%=list[brand][id].leibie%></p>
+                                            <p class="bottom clearfix"> <span class="price"><i>¥</i><i class="wbiaoPrice"><%=list[brand][id].price%></i>
+                                                    <i>¥<%=list[brand][id].oldprice%></i></span> <span class="quatity fr">x
+                                                        <%if(list[brand][id].cnum){%>
+                                                            <span><%=list[brand][id].cnum%></span>
+                                                        <%}else{%>
+                                                            <span><%=list[brand][id].cnum%></span>
+                                                        <%}%>
+                                                    
+                                                    </span></p>
                                         </div>
                                     </a>
                                     <div class="editor">

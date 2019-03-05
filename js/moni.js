@@ -1,4 +1,4 @@
-var l={
+/* var l={
     "error": 0,
     "list": {
         "d1": {
@@ -67,6 +67,16 @@ var l={
         }
 
     }
+} 
+;*/
+var l={
+    "9":{
+        "cnum":4,
+        "price":"4800"
+    },
+    "7":{
+        "cnum":2,
+        "price":"4800"
+    }
 }
-;
 localStorage.cart=JSON.stringify(l);
