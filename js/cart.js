@@ -15,6 +15,8 @@
         }),
             e
     }
+    // 单个商品上的删除按钮的功能
+    // 传递过来的是商品的id
     cart.goodsDelete = function (goodsCode) {
         function removeDel() {
             cart.scrolls[goodsCode].destroy(),
