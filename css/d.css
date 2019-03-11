@@ -1044,7 +1044,7 @@
     display: block;
     width: 25px;
     height: 25px;
-    background: url(/public/images/sprites-a/icon-a-cart02.png) no-repeat;
+    background: url(../images/detail/icon-a-cart02.png) no-repeat;
     background-size: contain
 }
 

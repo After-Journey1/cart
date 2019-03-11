@@ -6,35 +6,18 @@
     if($mysqli->connect_errno){
         die($mysqli->connect_error);
     }
-$cartIdList=$_GET["cartIdList"];
-        $sql="delete from cartdm where Id in ($cartIdList)";
+    $quantity=$_GET["quantity"];
+    $userId=$_GET["userId"];
+    $goodsCode=$_GET["goodsCode"];
 
+    $sql="update cart2 set goodsNum=$quantity where goodsCode=$goodsCode and cart2.userId = {$userId}";
     $result=$mysqli->query($sql);
-if($result===TRUE){
-    $data["error"]=0;
-}else{
-    $data["error"]=1;
-}
+
+    if($result===TRUE){
+        $data["error"]=0;
+    }else{
+        $data["error"]=1;
+    }
     echo json_encode($data);
 
-    // header("content-type:text/html;charset=utf-8");
-    // date_default_timezone_set('PRC'); //设置中国时区 
-    // $mysqli=new mysqli("localhost","root","root","yunbiao");
-    // // $id="3,4,7";
-    // $id=$_GET["id"];
-    // $mysqli->set_charset("utf8");
-    // if($mysqli->connect_errno){
-    //     die($mysqli->connect_error);
-    // }
-    // $sql="select * from car where Id in ($id)";
-    // $result=$mysqli->query($sql);
-    // if($result->num_rows>0){
-    //     while($row=$result->fetch_assoc()){
-    //         $list[]=$row;
-    //     }
-    //     $data=array("error"=>0,"list"=>$list);
-    // }else{
-    //     $data=array("error"=>1);
-    // }
-    // echo json_encode($data);
 ?>

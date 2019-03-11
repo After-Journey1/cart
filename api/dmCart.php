@@ -8,13 +8,14 @@
     }
 
     $idList=$_GET["unloginCartList"];
+    $userId=$_GET["userId"];
     if($idList){
         $sql="select * from list where Id in ($idList)";
     }else{
-        $sql="select * from list,cartdm  where list.Id=cartdm.Id";
+        // echo " and cart2.userId={$userId}";
+        $sql="select * from list,cart2  where list.Id=cart2.goodsCode and cart2.userId = {$userId}";
     }
     $result=$mysqli->query($sql);
-
     if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
             $list[$row["brand"]][$row["Id"]] = $row;
