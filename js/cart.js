@@ -1,9 +1,9 @@
 (function (global, $) {
     // 模拟用户登录的效果
-    document.cookie = "user=dm";
+    // document.cookie = "user=dm";
     var t = ["normal", "editing"], e = t[0];
     var n = 200, s;
-    var cart = {};
+    window.cart = {};
     cart.getSelected = function () {
         var t = $("#W-cart").children(".cart-content").children(".shop-blocks").children(".goods").children(".lines")
             , e = [];
@@ -28,55 +28,59 @@
             , i = a.parents(".shop-blocks");
 
 
-            if (0 === yb.isLogin) {
-                // 从localstorage中删除数据
-                // if (!yb.cart.removeGoodsFromStorage(e))
-                //     return !1;
-                var allProMsg = cart.getInfoFromStorage() || [];
-                console.log(allProMsg[goodsCode])
-                delete allProMsg[goodsCode];
-                localStorage.cart=JSON.stringify(allProMsg);
-                removeDel()
-            } else if(1 === yb.isLogin){
-                $.ajax({
-                    type: "get",
-                    url: "api/dmDelCart.php",
-                    dataType: "json",
-                    data: {
-                        goodsId: goodsCode
-                    },
-                    // beforeSend: function() {
-                    //     // mui.toast("loading", {
-                    //     //     duration: 1e8,
-                    //     //     type: "div"
-                    //     // })
-                    // },
-                    success: function(data) {
-                        // if (t.info.error > 0)
-                        //     return mui.wCloseAllToasts(),
-                        //     403 === t.info.error ? (location.href = "/member/login?referrer=/cart",
-                        //     !1) : (mui.toast(t.info.message || "网络错误", {
-                        //         duration: 2e3,
-                        //         type: "div"
-                        //     }),
-                        //     !1);
-                        // mui.wCloseAllToasts(),
-                        if(!data.error){
-                            removeDel()
-                            console.log("删除成功")
-                        }
-                        // wb.cart.goods.updateStatus()
-                    },
-                    error: function(t) {
-                        console.log("sfasdfagfhdftghdfgh")
+        if (0 === yb.isLogin) {
+            // 从localstorage中删除数据
+            // if (!yb.cart.removeGoodsFromStorage(e))
+            //     return !1;
+            var allProMsg = cart.getInfoFromStorage() || [];
+            delete allProMsg[goodsCode];
+            localStorage.cart = JSON.stringify(allProMsg);
+            cart.updateStatus();
+            removeDel()
+        } else if (1 === yb.isLogin) {
+            $.ajax({
+                type: "get",
+                url: "api/dmDelCart.php",
+                dataType: "json",
+                data: {
+                    goodsCode: goodsCode
+                },
+                // beforeSend: function() {
+                //     // mui.toast("loading", {
+                //     //     duration: 1e8,
+                //     //     type: "div"
+                //     // })
+                // },
+                success: function (data) {
+                    // if (t.info.error > 0)
+                    //     return mui.wCloseAllToasts(),
+                    //     403 === t.info.error ? (location.href = "/member/login?referrer=/cart",
+                    //     !1) : (mui.toast(t.info.message || "网络错误", {
+                    //         duration: 2e3,
+                    //         type: "div"
+                    //     }),
+                    //     !1);
+                    // mui.wCloseAllToasts(),
+                    if (!data.error) {
+                        removeDel()
+                        console.log("删除成功")
+                        yb.GnFooter.cartBadgeVal(data.length);
+                        cart.updateStatus();
                     }
-                })
-            }
-            
+                    // wb.cart.goods.updateStatus()
+                },
+                error: function (t) {
+                    console.log("sfasdfagfhdftghdfgh")
+                }
+            })
+        }
+
     }
+    // updateStatus是改变中总价钱和结算数量的
     cart.updateStatus = function () {
         var selected = cart.getSelected();
-
+        var nowAll = $(".lines");
+        0 == nowAll.length ? cart.emptyTips.show():"";
         if (selected.length <= 0) {
             // cart.emptyTips.show();
             cart.footer.prices({
@@ -100,7 +104,11 @@
             cart.footer.deleteBtn.red()
         }
     }
-    cart.updateQuantity = function(t, e) {
+    cart.setInfoToStorage=function(code,num){
+        localStorage["cart"][code]["cnum"]=num;
+        console.log(localStorage["cart"]["1"])
+    }
+    cart.updateQuantity = function (t, e) {
         if (t && t.quantity && isNaN(Number(t.quantity)))
             return !1;
         var r = {
@@ -108,30 +116,19 @@
             cartId: null,
             quantity: null
         }
-          , a = $.extend(r, t);
-        0 === wb.isLogin ? function() {
-            var t = wb.cart.setInfoToStorage(a.goodsCode, {
-                quantity: a.quantity,
-                cart: a.cartId
-            })
-              , e = [];
-            o(t).each(function(t, o) {
-                e.push({
-                    goodsCode: t,
-                    quantity: o.quantity,
-                    salePrice: o.salePrice
-                })
-            }),
-            wb.cart.goods.updateSubQuantity(a.goodsCode, {
-                quantity: a.quantity
-            }),
-            wb.cart.goods.updateStatus()
-        }() : 1 === wb.isLogin && function() {
+            , a = $.extend(r, t);
+            console.log(a)
+        0 === yb.isLogin ? function () {
+            var t = cart.setInfoToStorage(a.goodsCode, a.quantity);
+            $(".lines[data-goods-code=" + t + "]").find(".bottom").children(".quatity").children("span").text(a.quantity)
+
+                cart.updateStatus()
+        }() : 1 === yb.isLogin && function () {
             o.ajax({
                 type: "post",
                 url: "/api/updateQuantity.php",
                 dataType: "json",
-                beforeSend: function() {
+                beforeSend: function () {
                     mui.toast("loading", {
                         duration: 1e8,
                         type: "div"
@@ -142,7 +139,7 @@
                     quantity: a.quantity
                 },
                 success: e,
-                error: function(t) {}
+                error: function (t) { }
             })
         }()
     }
@@ -152,7 +149,7 @@
             return $.parseJSON(localStorage.getItem("cart"));
         }
         if (localStorage.getItem("cart")) {
-            var localCart = $.parseJSON(localStorage.getItem("cart")), totalNum = 0, allProMsg = [],allId=[];
+            var localCart = $.parseJSON(localStorage.getItem("cart")), totalNum = 0, allProMsg = [], allId = [];
             if ("quantity" === t) {
                 for (var key in localCart) {
                     totalNum += localCart[key].quantity;
@@ -166,7 +163,7 @@
             } else if ("number" == typeof t) {
                 return localCart[String(t)];
             } else {
-                return null;
+                return localCart;
             }
         }
 
@@ -188,16 +185,27 @@
                     unloginCartList: allProMsg.join()
                 },
                 success: function (data) {
-                    $.each(data.list,function(key,val){
-                        $.each(data.list[key],function(key2,val2){
-                            $.each(allPrice,function(key3,val3){
-                                if(key2==key3){
-                                    data.list[key][key2]["cnum"]=allPrice[key3]["cnum"];
-                                    console.log(allPrice[key3]["cnum"])
+                    console.log(data);
+                    if (!data.error) {
+                        $.each(data.list, function (key, val) {
+                            console.log(key);
+                            $.each(data.list[key], function (key2, val2) {
+                                console.log(key2);
+                                // 如果只是将localstorage中的商品id传到后台，就手动添加cnum键
+                                if (allPrice) {
+                                    $.each(allPrice, function (key3, val3) {
+                                        if (key2 == key3) {
+                                            data.list[key][key2]["cnum"] = allPrice[key3]["cnum"];
+                                            console.log(allPrice[key3]["cnum"])
+                                        }
+                                    })
                                 }
                             })
                         })
-                    })
+                    }else{
+                        cart.emptyTips.show();
+                    }
+
                     cb(data);
                 },
                 error: function () { }
@@ -209,7 +217,7 @@
                 url: "api/dmMergeToLoginCart.php",
                 dataType: "json",
                 beforeSend: function () {
-                    console.log("loading");
+                    // console.log("loading");
                 },
                 data: {
                     unloginCartList: cart.getInfoFromStorage()
@@ -217,17 +225,16 @@
                 success: function (data) {
                     console.log("成功")
                     localStorage.removeItem("cart"),
-                    cb(data);
+                        cb(data);
                 },
-                error: function (data) { 
-                    console.log("失败")
-
+                error: function (data) {
+                    console.log("合并失败")
                 }
             })
         }
         var allProMsg = [];
         allProMsg = cart.getInfoFromStorage("array") || [];
-        var allPrice=cart.getInfoFromStorage();
+        var allPrice = cart.getInfoFromStorage();
         console.log(allProMsg);
         // 如果用户没有登录，而且local的cart中没有商品，就返回false
         if (0 === yb.isLogin && allProMsg.length <= 0) {
@@ -248,13 +255,13 @@
             }
         }
     };
-    cart.removeDomByGoodsCode = function(code) {
+    cart.removeDomByGoodsCode = function (code) {
         var e = $(".shop-blocks").find(".lines[data-goods-code=" + code + "]")
-          , r = e.parents(".shop-blocks");
+            , r = e.parents(".shop-blocks");
         cart.scrolls[code].destroy(),
-        cart.scrolls[code] = null,
-        delete cart.scrolls[code],
-        1 === r.children(".goods").children(".lines").length ? r.remove() : e.remove()
+            cart.scrolls[code] = null,
+            delete cart.scrolls[code],
+            1 === r.children(".goods").children(".lines").length ? r.remove() : e.remove()
     }
     cart.goodsGetSelected = function () {
         var $allGoods = $("#W-cart").children(".cart-content").children(".shop-blocks").children(".goods").children(".lines");
@@ -273,103 +280,60 @@
         })
         return allSelectedGoods;
     };
-    cart.goodsBatchDelete=function(){
+    cart.goodsBatchDelete = function () {
         console.log(4654645)
-            var sel=cart.goodsGetSelected(),idarr=[];
+        var sel = cart.goodsGetSelected(), idarr = [];
 
-            for(var i in sel){
-                idarr.push(sel[i]["goodsCode"]);
-            }
+        for (var i in sel) {
+            idarr.push(sel[i]["goodsCode"]);
+        }
 
-            if(0 === yb.isLogin){
-                // 
-            }else{
-                $.ajax({
-                    type: "get",
-                    url: "./api/batchDelete.php",
-                    dataType: "json",
-                    data: {
-                        cartIdList: idarr.join()
-                    },
-                    beforeSend: function() {
-                      
-                    },
-                    success: function(data) {
-                        if(!data.error){
-                            console.log("批量删除成功");
-                            for (var i in sel){
-                                cart.removeDomByGoodsCode(sel[i].goodsCode);
-                            }
-                                    
-                        }else{
-                            console.log("dfsfgsdhsdhsdfh")
+        if (0 === yb.isLogin) {
+            // 
+        } else {
+            $.ajax({
+                type: "get",
+                url: "./api/batchDelete.php",
+                dataType: "json",
+                data: {
+                    cartIdList: idarr.join()
+                },
+                beforeSend: function () {
+
+                },
+                success: function (data) {
+                    if (!data.error) {
+                        console.log("批量删除成功333333333");
+                        for (var i in sel) {
+                            cart.removeDomByGoodsCode(sel[i].goodsCode);
                         }
-                        // var o;
-                        // if (mui.wCloseAllToasts(),
-                        // 0 === t.info.error) {
-                        //     mui.toast("批量删除成功", {
-                        //         duration: 1e3,
-                        //         type: "div"
-                        //     });
-                        //     for (o in e)
-                        //         wb.cart.goods.removeDomByGoodsCode(e[o].goodsCode);
-                        //     wb.cart.goods.updateStatus()
-                        // } 
-                    },
-                    error: function(t) {
-                        console.log("批量删除失败");
+                        yb.GnFooter.cartBadgeVal(data.length);
+
+                        cart.updateStatus();
+                    } else {
+                        console.log("dfsfgsdhsdhsdfh")
                     }
-                })
-            }
+                    // var o;
+                    // if (mui.wCloseAllToasts(),
+                    // 0 === t.info.error) {
+                    //     mui.toast("批量删除成功", {
+                    //         duration: 1e3,
+                    //         type: "div"
+                    //     });
+                    //     for (o in e)
+                    //         wb.cart.goods.removeDomByGoodsCode(e[o].goodsCode);
+                    //     wb.cart.goods.updateStatus()
+                    // } 
+                },
+                error: function (t) {
+                    console.log("批量删除失败");
+                }
+            })
+        }
 
 
-
-            // var t, e = this.getSelected(), r = [];
-            // for (t in e)
-            //     r.push(e[t].cartId);
-            // if (0 === r.length)
-            //     return !1;
-            // 0 === wb.isLogin ? function() {
-            //     var t;
-            //     for (t in e)
-            //         wb.cart.goods.removeDomByGoodsCode(e[t].goodsCode),
-            //         wb.cart.removeGoodsFromStorage(e[t].goodsCode)
-            // }() : 1 === wb.isLogin && function() {
-            //     o.ajax({
-            //         type: "post",
-            //         url: "/cart/batchDelete",
-            //         dataType: "json",
-            //         data: {
-            //             cartIdList: r
-            //         },
-            //         beforeSend: function() {
-            //             mui.toast("loading", {
-            //                 duration: 1e8,
-            //                 type: "div"
-            //             })
-            //         },
-            //         success: function(t) {
-            //             var o;
-            //             if (mui.wCloseAllToasts(),
-            //             0 === t.info.error) {
-            //                 mui.toast("批量删除成功", {
-            //                     duration: 1e3,
-            //                     type: "div"
-            //                 });
-            //                 for (o in e)
-            //                     wb.cart.goods.removeDomByGoodsCode(e[o].goodsCode);
-            //                 wb.cart.goods.updateStatus()
-            //             } else
-            //                 403 === t.info.error && mui.toast("请先登录", {
-            //                     duration: 1e3,
-            //                     type: "div"
-            //                 })
-            //         },
-            //         error: function(t) {}
-            //     })
-            // }()
     }
-;
+        ;
     cart.header = {
         editAllBtn: {
             hide: function () {
@@ -453,10 +417,14 @@
         show: function () {
             $("#W-cart").children(".empty-status").removeClass("h"),
                 cart.header.editAllBtn.hide()
+            $("#W-cart-footer").children(".footer-bar").addClass("h");
+            $(".rewrite_right").addClass("h");
         },
         hide: function () {
             $("#W-cart").children(".empty-status").addClass("h"),
-                cart.header.editAllBtn.show()
+                cart.header.editAllBtn.show();
+            $("#W-cart-footer").children(".footer-bar").addClass("h");
+            $(".rewrite_right").removeClass("h");
         }
     };
     cart.editAll = function () {
@@ -544,50 +512,33 @@
         }
         // 如果用户没有登录就让登录提示显示出来，同时，如果购物车中有东西就显示东西，如果购物车内没有东西就显示购物车位空
         if (0 === yb.isLogin) {
-            console.log("mydllllll")
             cart.header.loginTips.show();
             cart.getInfoFromStorage() || cart.emptyTips.show();
         }
         // 得到购物车的数据，将数据用模板渲染上去，然后创建每一个商品的iscroll
         cart.goodsGet(function (data) {
-            console.log("gqsj");
-            console.log("gqsj");
-            var shopList = [];
-            var goodsList = {};
             if (!data.error) {
-                console.log("mycw");
-                // $.each(data.list,function(index,value){
-                //     if(shopList.indexOf(value.dianpu)!=-1){
-                //         shopList.push(value.dianpu);
-                //     }
-                //     goodsList[value.dianpu]=$.extend(true,[],value);
-                // });
                 var html = ejs.render($("#tpl").html(), { list: data.list });
                 $("#W-cart").children(".cart-content").html(html);
             } else {
                 cart.emptyTips.show();
             }
-
-            // if (data.data.data.cartShopList.length > 0) {
-            //     // 如果商店的长度大于0
-            //     cart.header.editAllBtn.show();
-            //     cart.footer.show();
-            // } else {
-            //     // 如果商店长度小于等于0就显示购物车为空
-            //     cart.emptyTips.show();
-            // }
             slideScrolls();
-            // dmGnFooter.cartBadgeVal(data.data.length);
+            // 改变底部导航中购物车图标右上角的数字
+            yb.GnFooter.cartBadgeVal(data.length);
         })
 
 
         // 开始绑定各种点击事件
+
+        // 点击单个店铺的全选按钮
         $("#W-cart").on("click", ".shop-title .cart-tik", function () {
             var t = $(this).parents(".shop-blocks").attr("data-shop-code");
             $(this).hasClass("on") ? cart.unSelect.shop(t) : cart.select.shop(t);
             cart.isSelectedAll() ? cart.select.all() : cart.unSelect.footerTitle();
             cart.updateStatus()
         })
+            // 点击选中单个商品
             .on("click", ".goods .cart-tik", function () {
                 var t = $(this)
                     , e = t.parents(".shop-blocks").attr("data-shop-code");
@@ -596,6 +547,7 @@
                 cart.isSelectedAll() ? cart.select.all() : cart.unSelect.footerTitle();
                 cart.updateStatus()
             })
+            // 点击单个商品的右滑的删除以及编辑全部的删除
             .on("click", ".lines .to-delete,.lines .del", function (t) {
                 var e = $(this)
                     , pa = e.parents(".lines")
@@ -630,19 +582,18 @@
                     cartId: Number(e.parents("[data-cart-id]").attr("data-cart-id")),
                     quantity: a,
                     goodsCode: i
-                }, function(t) {
+                }, function (t) {
                     if (mui.wCloseAllToasts(),
-                    0 === t.info.error)
+                        0 === t.info.error){
                         r.text(a),
-                        wb.cart.footer.prices(t.data.prices),
-                        wb.cart.goods.updateSubQuantity(i, {
-                            quantity: a
-                        }),
-                        wb.cart.goods.updateStatus();
-                    else {
+                            wb.cart.footer.prices(t.data.prices),
+                            $(".lines[data-goods-code=" + t + "]").find(".bottom").children(".quatity").children("span").text(e.quantity)
+
+                            wb.cart.goods.updateStatus();
+                        }else {
                         if (403 === t.info.error)
                             return location.href = "/member/login?referrer=/cart",
-                            !1;
+                                !1;
                         mui.toast(t.info.message || "网络错误", {
                             duration: 1500,
                             type: "div"
@@ -671,20 +622,19 @@
                 t = cart.goodsGetSelected().length,
                 "number" == typeof t && cart.footer.submitBtn.val(t),
                 cart.updateStatus()
-        }).on("click", "#batch-delete-btn", function() {
-            console.log("点击率")
-                    cart.goodsBatchDelete();
-                })
+        }).on("click", "#batch-delete-btn", function () {
+            cart.goodsBatchDelete();
+        })
 
 
-          /*      
-                .on("click", "#batch-collect-btn", function() {
-                    1 === isLogin ? cart.goods.batchAddToCollect() : mui.confirm("", "登录才能收藏，现在登录？", ["否", "是"], function(t) {
-                        1 === t.index && (window.location.href = "/member/login/?referrer=" + location.pathname)
-                    })
-                }).on("click", ".submit-btn", function() {
-                    cart.footer.submitBtn.submit()
-                }) */
+        /*      
+              .on("click", "#batch-collect-btn", function() {
+                  1 === isLogin ? cart.goods.batchAddToCollect() : mui.confirm("", "登录才能收藏，现在登录？", ["否", "是"], function(t) {
+                      1 === t.index && (window.location.href = "/member/login/?referrer=" + location.pathname)
+                  })
+              }).on("click", ".submit-btn", function() {
+                  cart.footer.submitBtn.submit()
+              }) */
 
     })
 })(window, jQuery)

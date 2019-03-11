@@ -18,13 +18,9 @@
         if($result1->num_rows>0){
             $row=$result1->fetch_assoc();
             $add=intval($value["cnum"],10)+intval($row["cnum"],10);
-            // print_r( $row) ;
-            // echo $row['cnum'];
-            // echo "dsfasfdf";
             $sql2="update cartdm set cnum=$add where Id=$key";
             $result2=$mysqli->query($sql2);
         }else{
-            echo "aaaa";
             $sql3="insert into cartdm(Id,cnum) values($key , {$value['cnum']} )";
             $result3=$mysqli->query($sql3);
         }
@@ -34,24 +30,14 @@
     $result=$mysqli->query($sql);
 
     if($result->num_rows>0){
+        $all=0;
         while($row=$result->fetch_assoc()){
+            $all+=$row["cnum"];
             $list[$row["brand"]][$row["Id"]] = $row;
         }
-        $data=array("error"=>0,"list"=>$list);
+        $data=array("error"=>0,"list"=>$list,"length"=>$all);
     }else{
         $data=array("error"=>1);
     }
-
     echo json_encode($data);
-    // if($result->num_rows>0){
-    //     while($row=$result->fetch_assoc()){
-    //         $list[$row["dianpuid"]][$row["Id"]] = $row;
-    //     }
-    //     $data=array("error"=>0,"list"=>$list);
-    // }else{
-    //     $data=array("error"=>1);
-    // }
-    // echo json_encode($data);
-        // $info=json_decode($_GET["unloginCartList"],true);
-        // print_r($info["b"]) ;
 ?>

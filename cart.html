@@ -76,7 +76,7 @@
             </a><a id="index_cart" href="/cart" class="on">
                 <div class="W_footer_img icon-a-cart01"></div>
                 <div class="W_footer_title">购物车</div>
-                <div class="W_footer_tag W_footer_cart_badge">13</div>
+                <div class="W_footer_tag W_footer_cart_badge">0</div>
             </a><a id="index_member" href="https://mu.wbiao.cn/member">
                 <div class="W_footer_img icon-a-my01"></div>
                 <div class="W_footer_title">我的</div>
@@ -106,18 +106,14 @@
                                             <p class="specifications"><%=list[brand][id].leibie%></p>
                                             <p class="bottom clearfix"> <span class="price"><i>¥</i><i class="wbiaoPrice"><%=list[brand][id].price%></i>
                                                     <i>¥<%=list[brand][id].oldprice%></i></span> <span class="quatity fr">x
-                                                        <%if(list[brand][id].cnum){%>
                                                             <span><%=list[brand][id].cnum%></span>
-                                                        <%}else{%>
-                                                            <span><%=list[brand][id].cnum%></span>
-                                                        <%}%>
                                                     
                                                     </span></p>
                                         </div>
                                     </a>
                                     <div class="editor">
                                         <div class="calc clearfix"> <span class="minus calc-btns fl">-</span>
-                                            <div class="val">1</div> <span class="plus calc-btns">+</span>
+                                            <div class="val"><%=list[brand][id].cnum%></div> <span class="plus calc-btns">+</span>
                                         </div> <button class="del">删除</button>
                                     </div>
                                 </div>
