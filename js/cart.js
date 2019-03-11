@@ -1,6 +1,6 @@
 (function (global, $) {
     // 模拟用户登录的效果
-    document.cookie = "user=dm";
+    // document.cookie = "user=dm";
     var t = ["normal", "editing"], e = t[0];
     var n = 200, s;
     var cart = {};
@@ -544,7 +544,7 @@
         }
         // 如果用户没有登录就让登录提示显示出来，同时，如果购物车中有东西就显示东西，如果购物车内没有东西就显示购物车位空
         if (0 === yb.isLogin) {
-            console.log("mydllllll")
+            console.log("用户没有登录，要显示登录提示"); 
             cart.header.loginTips.show();
             cart.getInfoFromStorage() || cart.emptyTips.show();
         }
